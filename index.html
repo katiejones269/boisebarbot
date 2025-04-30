@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>boise bar bot</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav-container">
+    <div class="nav-content">
+      <div class="nav-links">
+        <a href="#home" class="nav-link active">find a bar</a>
+        <a href="#saved" class="nav-link">saved bars</a>
+        <a href="#reviews" class="nav-link">reviews</a>
+        <a href="#events" class="nav-link">bar events</a>
+        <button onclick="window.location.href='#home'" class="nav-button">take the bar vibe quiz</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <div class="title-group">
+          <h1>boise bar bot</h1>
+          <p class="subtitle">find your perfect bar based on vibe and preferences</p>
+          <div class="header-buttons">
+            <button onclick="window.location.href='#home'" class="header-button">take the bar vibe quiz</button>
+          </div>
+        </div>
+        <img src="assets/bar-icons.png" alt="Bar icons showing cocktail, music note, beer, location, and disco ball" class="header-icons">
+      </div>
+    </header>
+
+    <main>
+      <!-- Home Section (Bar Finder) -->
+      <section id="home" class="section active">
+        <div class="form-container">
+          <form id="barPreferences" onsubmit="searchBars(event)">
+            <div class="form-group">
+              <label>when do you plan to visit?</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" name="time" value="weekday"> weekday</label>
+                <label class="checkbox-label"><input type="checkbox" name="time" value="weekend"> weekend</label>
+                <label class="checkbox-label"><input type="checkbox" name="time" value="day"> daytime (before 5pm)</label>
+                <label class="checkbox-label"><input type="checkbox" name="time" value="night"> evening (after 5pm)</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>price range</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" name="price" value="1"> $ (inexpensive)</label>
+                <label class="checkbox-label"><input type="checkbox" name="price" value="2"> $$ (moderate)</label>
+                <label class="checkbox-label"><input type="checkbox" name="price" value="3"> $$$ (expensive)</label>
+                <label class="checkbox-label"><input type="checkbox" name="price" value="4"> $$$$ (very expensive)</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>atmosphere (select all that apply)</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" name="atmosphere" value="quiet"> quiet/relaxed</label>
+                <label class="checkbox-label"><input type="checkbox" name="atmosphere" value="lively"> lively/energetic</label>
+                <label class="checkbox-label"><input type="checkbox" name="atmosphere" value="sports"> sports bar</label>
+                <label class="checkbox-label"><input type="checkbox" name="atmosphere" value="dive"> dive bar</label>
+                <label class="checkbox-label"><input type="checkbox" name="atmosphere" value="upscale"> upscale</label>
+                <label class="checkbox-label"><input type="checkbox" name="atmosphere" value="pub"> pub style</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>music preferences</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" name="music" value="live"> live music</label>
+                <label class="checkbox-label"><input type="checkbox" name="music" value="dj"> dj nights</label>
+                <label class="checkbox-label"><input type="checkbox" name="music" value="jazz"> jazz</label>
+                <label class="checkbox-label"><input type="checkbox" name="music" value="rock"> rock</label>
+                <label class="checkbox-label"><input type="checkbox" name="music" value="country"> country</label>
+                <label class="checkbox-label"><input type="checkbox" name="music" value="quiet"> background music only</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>group size</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" name="group" value="solo"> solo/couple (1-2)</label>
+                <label class="checkbox-label"><input type="checkbox" name="group" value="small"> small group (3-6)</label>
+                <label class="checkbox-label"><input type="checkbox" name="group" value="large"> large group (7+)</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>food options</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" name="food" value="full"> full menu</label>
+                <label class="checkbox-label"><input type="checkbox" name="food" value="snacks"> bar snacks</label>
+                <label class="checkbox-label"><input type="checkbox" name="food" value="late"> late night kitchen</label>
+                <label class="checkbox-label"><input type="checkbox" name="food" value="none"> no food needed</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>features (select all that apply)</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" name="features" value="outdoor"> outdoor seating</label>
+                <label class="checkbox-label"><input type="checkbox" name="features" value="parking"> parking lot</label>
+                <label class="checkbox-label"><input type="checkbox" name="features" value="craft beer"> craft beer</label>
+                <label class="checkbox-label"><input type="checkbox" name="features" value="cocktails"> cocktails</label>
+                <label class="checkbox-label"><input type="checkbox" name="features" value="games"> games/activities</label>
+                <label class="checkbox-label"><input type="checkbox" name="features" value="transit"> near public transit</label>
+              </div>
+            </div>
+
+            <button type="submit">find your perfect bar</button>
+          </form>
+        </div>
+        <div id="loading" class="loading hidden">
+          <div class="spinner"></div>
+          <p>finding the perfect bars for you...</p>
+        </div>
+        <div id="results" class="results-grid"></div>
+      </section>
+
+      <!-- Saved Bars Section -->
+      <section id="saved" class="section">
+        <h2>your saved bars</h2>
+        <div class="saved-bars-grid">
+          <div class="empty-state">
+            <p>you haven't saved any bars yet</p>
+            <button type="button" onclick="window.location.href='#home'" class="nav-link">find some bars</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reviews Section -->
+      <section id="reviews" class="section">
+        <h2>bar reviews</h2>
+        <div class="empty-state">
+          <p>share your experiences at local bars</p>
+          <p>coming soon!</p>
+        </div>
+      </section>
+
+      <!-- Events Section -->
+      <section id="events" class="section">
+        <h2>upcoming bar events</h2>
+        <div class="empty-state">
+          <p>discover live music, happy hours, and special events</p>
+          <p>coming soon!</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Simple navigation handling
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Update active link
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        
+        // Show active section
+        const sectionId = link.getAttribute('href').substring(1);
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
